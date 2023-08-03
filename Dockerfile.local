@@ -1,0 +1,26 @@
+FROM docker:24.0.5-cli-alpine3.18 as docker
+
+FROM node:alpine3.18
+
+ARG UID=1000
+ARG DOCKER_GID=1001
+
+RUN addgroup -g $DOCKER_GID docker && \
+    addgroup node docker
+
+RUN apk --no-cache add shadow \
+    && find / -group node -exec chgrp -h $UID {} \; \
+    && find / -user node -exec chown -h $UID {} \; \
+    && usermod -u $UID node \
+    && groupmod -g $UID node \
+    && apk del shadow
+
+COPY --from=docker /usr/local/libexec/docker/cli-plugins/docker-compose /usr/local/libexec/docker/cli-plugins/docker-compose
+COPY --from=docker /usr/local/bin/* /usr/local/bin/
+
+USER node
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app
+

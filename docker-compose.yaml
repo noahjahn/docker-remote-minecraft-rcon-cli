@@ -1,0 +1,32 @@
+version: '3'
+services:
+  node:
+    build:
+      dockerfile: Dockerfile.local
+      context: .
+      args:
+        - UID=${UID}
+    restart: unless-stopped
+    user: ${UID}
+    ports:
+      - 3333:3333
+    entrypoint: npm
+    command: run dev
+    volumes:
+      - ./:/home/node/app
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  database:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: remote-minecraft-rcon-cli
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: remote-minecraft-rcon-cli
+
+volumes:
+  postgres-data:
