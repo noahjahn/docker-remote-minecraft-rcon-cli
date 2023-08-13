@@ -25,9 +25,9 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
-Route.get('/gamemode/:containerId/:gamemode/:username', async ({ params }) => {
+Route.get('/gamemode/:containerId/:gamemode/:username', ({ params }) => {
   try {
-    const result = await child.execSync(
+    const result = child.execSync(
       `docker exec ${params.containerId} rcon-cli gamemode ${params.gamemode} ${params.username}`
     )
     return { result: result.toString() }
