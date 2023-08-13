@@ -47,7 +47,7 @@ FROM node:alpine3.18
 ARG DOCKER_GID=1001
 
 RUN addgroup -g $DOCKER_GID docker && \
-    addgroup node docker
+  addgroup node docker
 
 COPY --from=docker /usr/local/libexec/docker/cli-plugins/docker-compose /usr/local/libexec/docker/cli-plugins/docker-compose
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/docker
@@ -68,7 +68,7 @@ USER node
 ENV PORT=3333
 ENV HOST=0.0.0.0
 ENV NODE_ENV=production
-ENV APP_KEY=LZYAlo-LG-1koU0BoxG1qpycZZXpyaX-
+ENV APP_KEY=secret
 ENV DRIVE_DISK=local
 ENV DB_CONNECTION=pg
 ENV PG_HOST=host.docker.internal
@@ -76,5 +76,7 @@ ENV PG_PORT=5432
 ENV PG_USER=remote-minecraft-rcon-cli
 ENV PG_PASSWORD=secret
 ENV PG_DB_NAME=remote-minecraft-rcon-cli
+
+ENTRYPOINT [ "node" ]
 
 CMD [ "server.js" ]

@@ -8,7 +8,9 @@
     "start": "node server.js",
     "test": "node ace test",
     "lint": "eslint . --ext=.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "health": "node bin/health.mjs",
+    "health:dev": "node bin/health.mjs http://node:3333"
   },
   "eslintConfig": {
     "extends": [
